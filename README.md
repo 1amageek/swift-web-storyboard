@@ -42,36 +42,14 @@ Install the pinned compiler and matching SDK before starting. The
 defines the compiler, linker, and SDK configuration. `.swift-version` records the
 Swiftly selector; it does not install the WebAssembly SDK.
 
-### Clone and configure
+### Start the application
+
+With the pinned Swift toolchain selected and its matching SDK installed:
 
 ```bash
 git clone https://github.com/1amageek/swift-web-storyboard.git
 cd swift-web-storyboard
-```
-
-Point these variables at the **actual toolchain directory** on your machine.
-The path below is the macOS user-toolchain location; adjust it if your compiler
-is installed elsewhere.
-
-```bash
-export SWIFT_WEB_TOOLCHAIN_BIN="$HOME/Library/Developer/Toolchains/swift-6.4.x-DEVELOPMENT-SNAPSHOT-2026-08-14-a.xctoolchain/usr/bin"
-export SWIFT_WEB_HOST_SWIFT="$SWIFT_WEB_TOOLCHAIN_BIN/swift"
-export SWIFT_WEB_WASM_SWIFT="$SWIFT_WEB_TOOLCHAIN_BIN/swift"
-export SWIFT_WEB_WASM_TOOLCHAIN_BIN="$SWIFT_WEB_TOOLCHAIN_BIN"
-export SWIFT_WEB_WASM_SDK="swift-6.4.x-DEVELOPMENT-SNAPSHOT-2026-08-14-a_wasm"
-
-"$SWIFT_WEB_HOST_SWIFT" --version
-"$SWIFT_WEB_HOST_SWIFT" sdk list
-```
-
-Use the same snapshot for the compiler and SDK. The WASM compiler path must have
-`wasm-ld` beside it; a Swiftly shim such as `~/.swiftly/bin/swift` is not a valid
-`SWIFT_WEB_WASM_SWIFT` value.
-
-### Start the application
-
-```bash
-"$SWIFT_WEB_HOST_SWIFT" run sweb storyboard --host 127.0.0.1 --port 3000
+swift run sweb storyboard
 ```
 
 Once the server reports ready, open **http://127.0.0.1:3000/storyboard**. The first
@@ -84,14 +62,14 @@ separate SwiftWeb checkout or a globally installed CLI.
 
 ## Commands
 
-Run these from the repository root using the environment configured above.
+Run these from the repository root.
 
 | Command | Result |
 |---|---|
-| `"$SWIFT_WEB_HOST_SWIFT" run sweb storyboard` | Start the development server |
-| `"$SWIFT_WEB_HOST_SWIFT" run sweb storyboard prepare` | Prepare the application's generated packages |
-| `"$SWIFT_WEB_HOST_SWIFT" run sweb storyboard build` | Build server and browser artifacts for the configured local environment |
-| `"$SWIFT_WEB_HOST_SWIFT" test` | Run the native catalog tests |
+| `swift run sweb storyboard` | Start the development server |
+| `swift run sweb storyboard prepare` | Prepare the application's generated packages |
+| `swift run sweb storyboard build` | Build server and browser artifacts for the configured local environment |
+| `swift test` | Run the native catalog tests |
 
 Generated packages and runtime artifacts live under `.swiftweb`; SwiftPM build
 products live under `.build`. Application changes belong in `Sources`, not in
@@ -136,11 +114,9 @@ component boundaries and verification ownership.
 
 ### Browser tests
 
-With Node.js and npm available, keep the toolchain variables from the setup
-section and run:
+With the pinned toolchain selected and Node.js and npm available, run:
 
 ```bash
-export SWIFTWEB_E2E_HOST_SWIFT_EXECUTABLE="$SWIFT_WEB_HOST_SWIFT"
 cd Tests/BrowserE2E
 npm ci
 npx playwright install chromium
@@ -151,14 +127,6 @@ The runner builds the CLI, starts the application on an available local port,
 and checks sidebar navigation, browser back/forward, appearance persistence,
 native hash and external links, runtime reuse, and browser diagnostics. It stops
 the server and removes generated `.swiftweb` output afterward.
-
-Optional environment variables:
-
-| Variable | Purpose |
-|---|---|
-| `SWIFTWEB_CLI_EXECUTABLE` | Absolute path to an already built `sweb` executable |
-| `SWIFTWEB_E2E_BROWSER_EXECUTABLE_PATH` | Path to installed Chrome or another Chromium-compatible executable |
-| `SWIFTWEB_E2E_KEEP_STORYBOARD=1` | Preserve generated `.swiftweb` output after the test |
 
 ## License
 
