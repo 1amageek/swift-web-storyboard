@@ -38,7 +38,7 @@ or read its [information architecture](Sources/SwiftWebStoryboard/INFORMATION_AR
 | Browser | A browser with WebAssembly support; the browser test uses Chromium |
 
 Install the pinned compiler and matching SDK before starting. The
-[SwiftWeb toolchain guide](https://github.com/1amageek/swift-web/blob/72fdf905469e3e6f38fc8c72e79e7200efd11159/docs/Toolchain.md)
+[SwiftWeb toolchain guide](https://github.com/1amageek/swift-web/blob/main/docs/Toolchain.md)
 defines the compiler, linker, and SDK configuration. `.swift-version` records the
 Swiftly selector; it does not install the WebAssembly SDK.
 
